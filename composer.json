@@ -1,0 +1,41 @@
+{
+    "name": "021/crypto-payment-sdk",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "021-projects",
+            "email": "devsellio@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "O21\\CryptoPaymentApi\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "021/support": "^1.0.1",
+        "guzzlehttp/guzzle": "^7.0",
+        "illuminate/pagination": ">=7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9",
+        "vlucas/phpdotenv": "^5.4"
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/phpunit tests"
+        ]
+    }
+}
