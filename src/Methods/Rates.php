@@ -4,8 +4,8 @@ namespace O21\CryptoPaymentApi\Methods;
 
 trait Rates
 {
-    public function getRates(): array
+    public function getRates(string $currency): array
     {
-        return $this->get('rates');
+        return $this->get('rates', compact('currency'));
     }
 }
