@@ -67,6 +67,23 @@ class Client
      * @throws \O21\CryptoPaymentApi\Exceptions\ValidationException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
+    public function patch(
+        string $endpoint,
+        array $form_params = [],
+        array $clientOptions = []
+    ) {
+        $options = array_merge(
+            compact('form_params'),
+            $clientOptions
+        );
+
+        return $this->sendRequest('PATCH', $endpoint, $options);
+    }
+
+    /**
+     * @throws \O21\CryptoPaymentApi\Exceptions\ValidationException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function sendRequest(string $method, string $endpoint, array $options): mixed
     {
         $this->appendDefaultOptions($method, $options);
@@ -94,6 +111,7 @@ class Client
                 break;
 
             case 'POST':
+            case 'PATCH':
                 if (! isset($options[RequestOptions::FORM_PARAMS])) {
                     $options[RequestOptions::FORM_PARAMS] = [];
                 }
