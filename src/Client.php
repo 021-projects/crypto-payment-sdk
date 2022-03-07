@@ -11,6 +11,7 @@ class Client
     use Methods\Rates;
     use Methods\Invoices;
     use Methods\Wallets;
+    use Methods\Users;
 
     public const API_URL = 'https://crypto-payment.com/api/v1/';
 
@@ -19,10 +20,10 @@ class Client
     protected string $apiToken;
 
     public function __construct(
-        string $apiToken,
+        string $apiToken = '',
         string $url = ''
     ) {
-        $this->apiToken = $apiToken;
+        $this->setApiToken($apiToken);
         $this->guzzle = new GuzzleClient([
             'base_uri' => $url ?: env('API_URL') ?: self::API_URL
         ]);
@@ -102,5 +103,21 @@ class Client
         }
 
         $options[RequestOptions::HTTP_ERRORS] = false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiToken(): string
+    {
+        return $this->apiToken;
+    }
+
+    /**
+     * @param  string  $apiToken
+     */
+    public function setApiToken(string $apiToken): void
+    {
+        $this->apiToken = $apiToken;
     }
 }
