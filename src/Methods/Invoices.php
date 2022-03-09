@@ -13,10 +13,15 @@ trait Invoices
         ?string $type = ''
     ): Invoice {
         $response = $this->post(
-            $this->walletsEndpoint($type, '/invoice'),
+            $this->walletsEndpoint($type, '/invoices'),
             compact('amount', 'currency', 'extra_data')
         );
 
         return new Invoice($response);
+    }
+
+    public function getInvoice(string $id): Invoice
+    {
+        return new Invoice($this->get("invoices/$id"));
     }
 }
