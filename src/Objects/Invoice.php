@@ -11,6 +11,9 @@ use O21\Support\FreeObject;
  * @property-read string $address
  * @property-read \Carbon\Carbon $createdAt
  * @property-read \Carbon\Carbon $paidAt
+ * @property-read string $walletType
+ * @property-read string $walletSymbol
+ * @property-read array{confirmed: string, unconfirmed: string} $receivedToAddress
  * @property-read array $extraData
  */
 class Invoice extends FreeObject
