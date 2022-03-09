@@ -9,8 +9,8 @@ use O21\Support\FreeObject;
  * @property-read string $amount
  * @property-read string $amountInWalletCurrency
  * @property-read string $address
- * @property-read \Carbon\Carbon $createdAt
- * @property-read \Carbon\Carbon $paidAt
+ * @property-read \Carbon\Carbon|null $createdAt
+ * @property-read \Carbon\Carbon|null $paidAt
  * @property-read string $walletType
  * @property-read string $walletSymbol
  * @property-read array{confirmed: string, unconfirmed: string} $receivedToAddress

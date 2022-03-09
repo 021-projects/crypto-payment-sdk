@@ -25,7 +25,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "021/support": "^1.0.1",
+        "021/support": "^2.0",
         "guzzlehttp/guzzle": "^7.0",
         "illuminate/pagination": ">=7.0"
     },
