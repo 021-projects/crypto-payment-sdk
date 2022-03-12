@@ -48,10 +48,19 @@ trait Wallets
         );
     }
 
+    /**
+     * @param  string  $address
+     * @param  string| float $amount
+     * @param  string|float $feePerKbyte
+     * @param  string|null  $type
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \O21\CryptoPaymentApi\Exceptions\ValidationException
+     */
     public function withdraw(
         string $address,
-        string|float $amount,
-        string|float $feePerKbyte,
+        $amount,
+        $feePerKbyte,
         ?string $type = null
     ): array {
         $params = array_merge(
@@ -62,11 +71,20 @@ trait Wallets
         return $this->post($this->walletsEndpoint($type, '/withdraw'), $params);
     }
 
+    /**
+     * @param  string  $address
+     * @param  string|float  $amount
+     * @param  string|float  $feePerKbyte
+     * @param  string|null  $type
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \O21\CryptoPaymentApi\Exceptions\ValidationException
+     */
     #[ArrayShape(['amount' => 'float', 'amount_in_usd' => 'float'])]
     public function calculateFeeAmount(
         string $address,
-        string|float $amount,
-        string|float $feePerKbyte,
+        $amount,
+        $feePerKbyte,
         ?string $type = null
     ): array {
         $params = array_merge(
