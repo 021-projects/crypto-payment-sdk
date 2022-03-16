@@ -13,7 +13,7 @@ class Client
     use Methods\Wallets;
     use Methods\Users;
 
-    public const API_URL = 'https://crypto-payment.com/api/v1/';
+    public const API_URL = 'https://crypto-payment.devsell.io/api/v1/';
 
     protected GuzzleClient $guzzle;
 
