@@ -25,8 +25,13 @@ class Client
     ) {
         $this->setApiToken($apiToken);
         $this->guzzle = new GuzzleClient([
-            'base_uri' => $url ?: env('API_URL') ?: self::API_URL
+            'base_uri' => $url ?: $this->urlFromEnv() ?: self::API_URL
         ]);
+    }
+
+    protected function urlFromEnv(): ?string
+    {
+        return class_exists('PhpOption\Option') ? env('API_URL') : null;
     }
 
     /**
