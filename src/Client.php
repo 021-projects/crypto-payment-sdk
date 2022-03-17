@@ -88,8 +88,9 @@ class Client
     /**
      * @throws \O21\CryptoPaymentApi\Exceptions\ValidationException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return array|string
      */
-    public function sendRequest(string $method, string $endpoint, array $options): mixed
+    public function sendRequest(string $method, string $endpoint, array $options)
     {
         $this->appendDefaultOptions($method, $options);
 
