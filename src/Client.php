@@ -96,7 +96,7 @@ class Client
 
         $body = $this->guzzle->request($method, $endpoint, $options)->getBody();
 
-        $response = @\GuzzleHttp\Utils::jsonDecode($body, true) ?? (string)$body;
+        $response = @json_decode($body, true) ?? (string)$body;
 
         if (is_array($response) && ValidationException::hasInResponse($response)) {
             throw ValidationException::fromResponse($response);
