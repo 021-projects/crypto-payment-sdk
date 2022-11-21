@@ -9,14 +9,15 @@ trait Users
 {
     public function createUserForServer(
         string $callback_url,
-        bool $setTokenInClient = true
+        bool $setKeysInClient = true
     ): UserServer {
         $user = new UserServer(
             $this->post('users/server', compact('callback_url'))
         );
-        
-        if ($setTokenInClient) {
-            $this->setApiToken($user->api_token);
+
+        if ($setKeysInClient) {
+            $this->setPublicKey($user->api_token);
+            $this->setPrivateKey($user->secret_key);
         }
 
         return $user;
@@ -30,14 +31,15 @@ trait Users
         );
     }
 
-    public function regenerateKeysForUser(bool $setTokenInClient = true): UserServer
+    public function regenerateKeysForUser(bool $setKeysInClient = true): UserServer
     {
         $user = new UserServer(
             $this->post('users/regenerate-keys')
         );
 
-        if ($setTokenInClient) {
-            $this->setApiToken($user->api_token);
+        if ($setKeysInClient) {
+            $this->setPublicKey($user->api_token);
+            $this->setPrivateKey($user->secret_key);
         }
 
         return $user;

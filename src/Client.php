@@ -5,6 +5,7 @@ namespace O21\CryptoPaymentApi;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\RequestOptions;
 use O21\CryptoPaymentApi\Exceptions\ValidationException;
+use O21\CryptoPaymentApi\Webhook\Signature;
 
 class Client
 {
@@ -15,15 +16,23 @@ class Client
 
     public const API_URL = 'https://crypto-payment.devsell.io/api/v1/';
 
+    private const AUTH_HEADER_KEY = 'Authorization';
+    private const SIGNATURE_HEADER_KEY = 'Authorization-Signature';
+
     protected GuzzleClient $guzzle;
 
-    protected string $apiToken;
+    protected string $publicKey;
+
+    protected string $privateKey;
 
     public function __construct(
-        string $apiToken = '',
+        string $publicKey = '',
+        string $privateKey = '',
         string $url = ''
     ) {
-        $this->setApiToken($apiToken);
+        $this->setPublicKey($publicKey);
+        $this->setPrivateKey($privateKey);
+
         $this->guzzle = new GuzzleClient([
             'base_uri' => $url ?: $this->urlFromEnv() ?: self::API_URL
         ]);
@@ -107,41 +116,69 @@ class Client
 
     protected function appendDefaultOptions(string $method, array &$options): void
     {
-        switch ($method) {
-            case 'GET':
-                if (! isset($options[RequestOptions::QUERY])) {
-                    $options[RequestOptions::QUERY] = [];
-                }
-
-                $options[RequestOptions::QUERY]['api_token'] = $this->apiToken;
-                break;
-
-            case 'POST':
-            case 'PATCH':
-                if (! isset($options[RequestOptions::FORM_PARAMS])) {
-                    $options[RequestOptions::FORM_PARAMS] = [];
-                }
-
-                $options[RequestOptions::FORM_PARAMS]['api_token'] = $this->apiToken;
-                break;
+        if (! isset($options[RequestOptions::HEADERS])) {
+            $options[RequestOptions::HEADERS] = [];
         }
 
+        // Authorization memo
+        $options[$this->getRequestPayloadKey($method)]['memo'] = time();
+
+        // Authorization headers
+        $options[RequestOptions::HEADERS][self::AUTH_HEADER_KEY] = $this->getPublicKey();
+        $options[RequestOptions::HEADERS][self::SIGNATURE_HEADER_KEY] = Signature::computeSignature(
+            $this->getPrivateKey(),
+            $this->getRequestPayload($method, $options)
+        );
+
         $options[RequestOptions::HTTP_ERRORS] = false;
+    }
+
+    protected function getRequestPayload(string $method, array $options): array
+    {
+        return $options[$this->getRequestPayloadKey($method)] ?? [];
+    }
+
+    protected function getRequestPayloadKey(string $method): string
+    {
+        switch ($method) {
+            case 'GET':
+            default:
+                return RequestOptions::QUERY;
+            case 'POST':
+            case 'PATCH':
+                return RequestOptions::FORM_PARAMS;
+        }
     }
 
     /**
      * @return string
      */
-    public function getApiToken(): string
+    public function getPublicKey(): string
     {
-        return $this->apiToken;
+        return $this->publicKey;
     }
 
     /**
-     * @param  string  $apiToken
+     * @param  string  $publicKey
      */
-    public function setApiToken(string $apiToken): void
+    public function setPublicKey(string $publicKey): void
     {
-        $this->apiToken = $apiToken;
+        $this->publicKey = $publicKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrivateKey(): string
+    {
+        return $this->privateKey;
+    }
+
+    /**
+     * @param  string  $privateKey
+     */
+    public function setPrivateKey(string $privateKey): void
+    {
+        $this->privateKey = $privateKey;
     }
 }
