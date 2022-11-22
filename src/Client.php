@@ -14,7 +14,7 @@ class Client
     use Methods\Wallets;
     use Methods\Users;
 
-    public const API_URL = 'https://crypto-payment.devsell.io/api/v1/';
+    public const API_URL = 'https://wisepay.to/api/v1/';
 
     private const AUTH_HEADER_KEY = 'Authorization';
     private const SIGNATURE_HEADER_KEY = 'Authorization-Signature';
