@@ -120,22 +120,19 @@ class Client
             $options[RequestOptions::HEADERS] = [];
         }
 
+        $memo = (string)time();
+
         // Authorization memo
-        $options[$this->getRequestPayloadKey($method)]['memo'] = time();
+        $options[$this->getRequestPayloadKey($method)]['memo'] = $memo;
 
         // Authorization headers
         $options[RequestOptions::HEADERS][self::AUTH_HEADER_KEY] = $this->getPublicKey();
         $options[RequestOptions::HEADERS][self::SIGNATURE_HEADER_KEY] = Signature::computeSignature(
             $this->getPrivateKey(),
-            $this->getRequestPayload($method, $options)
+            $memo
         );
 
         $options[RequestOptions::HTTP_ERRORS] = false;
-    }
-
-    protected function getRequestPayload(string $method, array $options): array
-    {
-        return $options[$this->getRequestPayloadKey($method)] ?? [];
     }
 
     protected function getRequestPayloadKey(string $method): string
