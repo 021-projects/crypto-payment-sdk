@@ -2,17 +2,18 @@
 
 namespace O21\CryptoPaymentApi\Methods;
 
+use O21\CryptoPaymentApi\Objects\MeResponse;
 use O21\CryptoPaymentApi\Objects\UserPatch;
 use O21\CryptoPaymentApi\Objects\UserServer;
 use O21\CryptoPaymentApi\Objects\Visitor;
 
 trait Users
 {
-    public function me(): array
+    public function me(): MeResponse
     {
         $response = $this->get('users/me');
         $response['visitor'] = new Visitor($response['visitor']);
-        return $response;
+        return new MeResponse($response);
     }
 
     public function createUserForServer(
