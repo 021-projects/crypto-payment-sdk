@@ -28,10 +28,12 @@ class TestCase extends BaseTestCase
 
     protected function assertEnvironmentFilled(): void
     {
-        if (! env('API_KEY')) {
-            $this->markTestSkipped('API key is missed. Please indicate it in .env file.');
+        if (! env('PUBLIC_KEY')) {
+            $this->markTestSkipped('Public key is missed. Please indicate it in .env file.');
         }
-
+        if (! env('PRIVATE_KEY')) {
+            $this->markTestSkipped('Private key is missed. Please indicate it in .env file.');
+        }
         if (! env('WALLET_TYPE')) {
             $this->markTestSkipped('Wallet type is missed. Please indicate it in .env file.');
         }
@@ -39,7 +41,7 @@ class TestCase extends BaseTestCase
 
     protected function setUpClient(): void
     {
-        $this->client = new Client(env('API_KEY'), env('API_URL'));
+        $this->client = new Client(env('PUBLIC_KEY'), env('PRIVATE_KEY'), env('API_URL'));
         $this->client->setWalletType(env('WALLET_TYPE'));
     }
 

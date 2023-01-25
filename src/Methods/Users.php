@@ -4,9 +4,17 @@ namespace O21\CryptoPaymentApi\Methods;
 
 use O21\CryptoPaymentApi\Objects\UserPatch;
 use O21\CryptoPaymentApi\Objects\UserServer;
+use O21\CryptoPaymentApi\Objects\Visitor;
 
 trait Users
 {
+    public function me(): array
+    {
+        $response = $this->get('users/me');
+        $response['visitor'] = new Visitor($response['visitor']);
+        return $response;
+    }
+
     public function createUserForServer(
         string $callback_url,
         bool $setKeysInClient = true
